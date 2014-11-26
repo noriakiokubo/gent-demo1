@@ -1,0 +1,38 @@
+<%= search_form_for @search, class: "form-inline" do |f| %>
+  <%= f.label :user_name_or_title_or_content_cont, "Filter" %>
+  <%= f.text_field :user_name_or_title_or_content_cont, class: "form-md search-field" %>
+  <%= f.submit "Search", class: "btn btn-sm btn-primary" %>
+  <%= link_to "Clear", posts_path, class: "btn btn-sm btn-default" %>
+<% end %>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Title</th>
+      <th>Content</th>
+      <th>Posted at</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @posts.each do |post| %>
+      <tr>
+        <td><%= post.user.name %></td>
+        <td><%= truncate(post.title, length: 15) %></td>
+        <td><%= truncate(post.content, length: 40) %></td>
+        <td><%= post.created_at.strftime("%y/%m/%d %H:%M") %></td>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'Show', post, class: "btn btn-xs btn-default" %>
+            <%= link_to 'Edit', edit_post_path(post), class: "btn btn-xs btn-info" %>
+            <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-xs btn-danger" %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @posts %>
